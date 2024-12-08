@@ -1,25 +1,26 @@
-require('dotenv').config();
 const express = require('express');
-const bodyParser = require('body-parser');
-const cors = require('cors');
-const sequelize = require('./config/database');
-
-// Importando as rotas
-const clientRoutes = require('./routes/client');
-const productRoutes = require('./routes/product');
-const purchaseRoutes = require('./routes/purchase');
-
 const app = express();
-app.use(cors());
-app.use(bodyParser.json());
+const port = 3000;  
 
-// Usando as rotas
-app.use('/clients', clientRoutes);
-app.use('/products', productRoutes);
-app.use('/purchases', purchaseRoutes);
+// Importando as rotas dos recursos (clientes, produtos, compras)
+const clienteRoutes = require('./route/cliente'); 
+const produtoRoutes = require('./route/produto');  
+const compraRoutes = require('./route/compra');  
 
-// Sincronização do BD e inicialização
-sequelize.sync({ force: true }).then(() => {
-  console.log('Database synced!');
-  app.listen(process.env.PORT || 3000, () => console.log('Server running on port 3000!'));
+// Middleware para parsing de JSON, para que o corpo das requisições seja interpretado como JSON
+app.use(express.json());
+
+// Definindo as rotas principais da API
+app.use('/clientes', clienteRoutes); 
+app.use('/produtos', produtoRoutes);  
+app.use('/compras', compraRoutes);  
+
+// Rota raiz da API
+app.get('/', (req, res) => {
+    res.send('API funcionando!');
+});
+
+// Iniciando o servidor na porta definida
+app.listen(port, () => {
+    console.log(`Servidor rodando na porta ${port}`);  // Log indicando que o servidor iniciou
 });
