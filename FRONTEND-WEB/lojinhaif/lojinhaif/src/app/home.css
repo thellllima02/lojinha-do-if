@@ -41,34 +41,3 @@ div a {
 div a:hover {
     background-color: #6f1d9b;
 }
-
-@media (max-width: 768px) {
-    .container {
-        width: 95%;
-        padding: 15px;
-    }
-
-    h1 {
-        font-size: 20px;
-    }
-
-    div a {
-        font-size: 14px;
-        width: 100%;
-    }
-}
-
-@media (max-width: 480px) {
-    .container {
-        width: 100%;
-        padding: 10px;
-    }
-
-    h1 {
-        font-size: 18px;
-    }
-
-    div a {
-        font-size: 12px;
-    }
-}
