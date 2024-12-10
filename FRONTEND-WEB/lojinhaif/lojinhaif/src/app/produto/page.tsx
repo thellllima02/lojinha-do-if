@@ -57,7 +57,7 @@ export default function Produtos() {
         <button onClick={() => setModalVisivel(true)}>Novo Produto</button>
         <div id="container-produtos" className={produtos.length === 0 ? "vazio" : ""}>
           {produtos.length === 0 ? (
-            <p>Nenhum produto cadastrado ainda.</p>
+            <p>Nenhum produto registrado ainda.</p>
           ) : (
             produtos.map((produto, index) => (
             <div key={index} className={`cartao-produto ${!produto.ativo ? "inativo" : ""}`}>
@@ -77,7 +77,7 @@ export default function Produtos() {
       {modalVisivel && (
         <div className="modal">
           <div className="conteudo-modal">
-            <h2>{produtoEditando ? 'Editar Produto' : 'Cadastrar produto'}</h2>
+            <h2>{produtoEditando ? 'Editar Produto' : 'Registrar produto'}</h2>
             <form onSubmit={salvarFormulario}>
               <input type="text" name="nome" placeholder="Nome do Produto" defaultValue={produtoEditando?.nome || ''} required />
               <input type="number" name="preco" placeholder="Preço" defaultValue={produtoEditando?.preco || ''} required />
