@@ -12,7 +12,12 @@ export default function Produtos() {
     evento.preventDefault();
 
     const nome = (evento.target as any).nome.value;
-    const preco = (evento.target as any).preco.value;
+    const preco = parseFloat((evento.target as any).preco.value);
+
+    if (isNaN(preco)) {
+      alert("Por favor, insira um preço válido.");
+      return;
+    }
 
     const novoProduto = { nome, preco, ativo: true };
     if (produtoEditando) {
@@ -60,17 +65,17 @@ export default function Produtos() {
             <p>Nenhum produto registrado ainda.</p>
           ) : (
             produtos.map((produto, index) => (
-            <div key={index} className={`cartao-produto ${!produto.ativo ? "inativo" : ""}`}>
-              <h3>{produto.nome}</h3>
-              <p>Preço: R$ {produto.preco}</p>
-              <p>{produto.descricao}</p>
-              <button onClick={() => editarProduto(produto)}>Editar</button>
-              <button onClick={() => alternarStatus(index)}>
-                {produto.ativo ? "Inativar" : "Ativar"}
+              <div key={index} className={`cartao-produto ${!produto.ativo ? "inativo" : ""}`}>
+                <h3>{produto.nome}</h3>
+                <p>Preço: R$ {produto.preco.toFixed(2)}</p> {}
+                <p>{produto.descricao}</p>
+                <button onClick={() => editarProduto(produto)}>Editar</button>
+                <button onClick={() => alternarStatus(index)}>
+                  {produto.ativo ? "Inativar" : "Ativar"}
                 </button>
-                </div>
-                ))
-                )}
+              </div>
+            ))
+          )}
         </div>
       </main>
 
@@ -79,8 +84,21 @@ export default function Produtos() {
           <div className="conteudo-modal">
             <h2>{produtoEditando ? 'Editar Produto' : 'Registrar produto'}</h2>
             <form onSubmit={salvarFormulario}>
-              <input type="text" name="nome" placeholder="Nome do Produto" defaultValue={produtoEditando?.nome || ''} required />
-              <input type="number" name="preco" placeholder="Preço" defaultValue={produtoEditando?.preco || ''} required />
+              <input
+                type="text"
+                name="nome"
+                placeholder="Nome do Produto"
+                defaultValue={produtoEditando?.nome || ''}
+                required
+              />
+              <input
+                type="number"
+                name="preco"
+                step="0.01"
+                placeholder="Preço"
+                defaultValue={produtoEditando?.preco || ''}
+                required
+              />
               <div>
                 <button type="submit">Salvar</button>
                 <button type="button" onClick={() => setModalVisivel(false)}>Cancelar</button>
