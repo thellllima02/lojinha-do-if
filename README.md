@@ -23,20 +23,36 @@ Este é um sistema completo para gerenciamento de produtos, compras e clientes. 
   - Axios: Para requisições HTTP.
 - **Descrição**: Uma aplicação móvel focada em permitir aos usuários interagir com o sistema de forma rápida e eficiente.
 
-## Funcionalidades
+# 🚀 Funcionalidades Disponíveis
 
-### Backend
+## Backend (API Restful)
 - CRUD de clientes, produtos e compras.
 - Registro de itens comprados e cálculo de totais de compra.
 - Autenticação (opcional).
+  
+### Clientes
+- GET /clients - Lista todos os clientes. (Chama o clienteService que utiliza o clienteRepository para buscar os - dados)
+- POST /clients - Cria um novo cliente. (Utiliza o clienteService para criar e validar os dados antes de salvar - no banco)
+- PUT /clients/:id - Atualiza um cliente existente. (Chama o clienteService para fazer a atualização)
+- DELETE /clients/:id - Remove um cliente. (Chama o clienteService para deletar o cliente)
+### Produtos
+- GET /products - Lista todos os produtos. (Chama o produtoService que utiliza o produtoRepository)
+- POST /products - Cria um novo produto. (Chama o produtoService para validar e salvar o produto)
+- PUT /products/:id - Atualiza um produto existente. (Usa o produtoService)
+- DELETE /products/:id - Remove um produto. (Chama o produtoService)
+### Compras
+- GET /purchases - Lista todas as compras. (Chama o compraService que usa o compraRepository)
+- POST /purchases - Registra uma nova compra. (Utiliza o compraService para gerenciar o processo)
+- PUT /purchases/:id - Atualiza uma compra existente. (Usa o compraService)
+- DELETE /purchases/:id - Remove uma compra. (Chama o compraService para deletar a compra)
 
-### Frontend Web
+## Frontend Web
 - Cadastro de clientes, produtos e compras.
 - Visualização detalhada de compras e itens.
 - Editar e excluir dados de clientes, produtos e compras.
 - Interface responsiva e de fácil uso.
 
-### Frontend Mobile
+## Frontend Mobile
 - Consulta de clientes, produtos e compras.
 - Interface intuitiva para facilitar o uso em dispositivos móveis.
 
