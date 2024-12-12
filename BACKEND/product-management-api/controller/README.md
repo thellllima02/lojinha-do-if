@@ -1,99 +1,130 @@
-# Controllers
+# Documentação dos Controllers
 
-A pasta `controller` contém os controladores responsáveis por gerenciar as operações CRUD (Criar, Ler, Atualizar e Excluir) para **clientes**, **compras** e **produtos**. Esses controladores também realizam validações específicas antes de encaminhar os dados para os serviços correspondentes.
+Este documento fornece uma explicação detalhada sobre os controllers `client.js`, `product.js` e `purchase.js`. Esses controllers são responsáveis por gerenciar as operações relacionadas a Clientes, Produtos e Compras, respectivamente, em um sistema CRUD.
 
----
+## Estrutura do Projeto
 
-## Estrutura dos Arquivos
+Os controllers interagem com os serviços (camada de lógica) e o banco de dados para:
+- Criar recursos
+- Atualizar recursos
+- Excluir recursos
+- Obter recursos
 
-### Cliente Controller (`cliente.js`)
-Responsável por operações relacionadas aos clientes. 
-
-**Funcionalidades**:
-- **Criar Cliente**: Valida se o email é único e se o cliente tem pelo menos 18 anos antes de criar um novo registro.
-- **Atualizar Cliente**: Garante que o email permanece único e valida a idade do cliente antes de atualizar.
-- **Excluir Cliente**: Remove um cliente pelo ID.
-- **Obter Clientes**: Retorna uma lista de todos os clientes registrados.
-
-**Validações**:
-1. **Email único**: Verifica no banco de dados se o email já está registrado.
-2. **Maioridade**: Calcula a idade com base na data de nascimento e só permite maiores de 18 anos.
+Cada funcionalidade está organizada por entidade.
 
 ---
 
-### Compra Controller (`compra.js`)
-Responsável por operações relacionadas às compras realizadas pelos clientes.
+## Arquivo `client.js`
 
-**Funcionalidades**:
-- **Criar Compra**: Registra uma nova compra.
-- **Atualizar Compra**: Permite a edição dos dados de uma compra existente.
-- **Excluir Compra**: Remove uma compra pelo ID.
-- **Obter Compras**: Retorna uma lista de todas as compras realizadas.
+### Dependências
+- **`moment`**: Biblioteca usada para cálculos relacionados a datas, como validação de idade.
+- **`clientService`**: Camada de lógica de negócios que realiza operações relacionadas a Clientes.
+- **`pool`**: Conexão com o banco de dados.
 
----
+### Funcionalidades
 
-### Produto Controller (`produto.js`)
-Responsável por operações relacionadas aos produtos disponíveis.
-
-**Funcionalidades**:
-- **Criar Produto**: Registra um novo produto.
-- **Atualizar Produto**: Permite editar os detalhes de um produto existente.
-- **Excluir Produto**: Remove um produto pelo ID.
-- **Obter Produtos**: Retorna uma lista de todos os produtos cadastrados.
-
----
-
-## Dependências Utilizadas
-
-- **`moment`**: Para manipulação e validação de datas.
-- **`pool`**: Gerenciador de conexões com o banco de dados.
-- **`clienteService`, `compraService`, `produtoService`**: Serviços que implementam as regras de negócios.
-
----
-
-## Como Funciona
-
-1. **Requisições Entrantes**: Os controladores recebem os dados das requisições HTTP (via `req` e `res`).
-2. **Validações**: Antes de delegar para os serviços, realizam validações específicas, como:
-   - Garantir unicidade de email.
-   - Verificar maioridade de clientes.
-3. **Interação com Serviços**: Encaminham os dados validados para os serviços, que acessam o banco de dados.
-4. **Respostas**: Retornam os resultados ou mensagens de erro para o cliente da API.
-
----
-
-## Padrões de Código
-
-- **HTTP Status Codes**:
-  - `201`: Sucesso ao criar (Created).
-  - `200`: Sucesso ao atualizar, excluir ou buscar (OK).
-  - `400`: Erros de validação (Bad Request).
-  - `404`: Recurso não encontrado (Not Found).
-  - `500`: Erros internos do servidor (Internal Server Error).
-
-- **Estrutura Modular**:
-  Cada entidade (Cliente, Compra, Produto) tem seu próprio controlador, facilitando a manutenção e expansão do projeto.
-
----
-
-## Como Utilizar
-
-### Exemplo de Rota
+#### Validação de Email Único
 ```javascript
-const express = require('express');
-const clienteController = require('./controller/cliente');
-const router = express.Router();
-
-router.post('/clientes', clienteController.createCliente);
-router.get('/clientes', clienteController.getClientes);
-
----
-
-## Próximos Passos
-
-1. **Adicionar mais validações** (se necessário).
-2. **Testes unitários e de integração** para garantir o funcionamento dos controladores.
-3. **Documentação detalhada** da API com ferramentas como Swagger ou Postman.
-
----
+const emailExists = async (email) => {
+    const [rows] = await pool.query('SELECT * FROM clients WHERE email = ?', [email]);
+    return rows.length > 0;
+};
 ```
+Verifica se o email fornecido já está registrado no banco de dados.
+
+#### Validação de Idade
+```javascript
+const isAdult = (birthDate) => {
+    const idade = moment().diff(moment(birthDate, 'YYYY-MM-DD'), 'years');
+    return idade >= 18;
+};
+```
+Verifica se o cliente tem pelo menos 18 anos.
+
+#### Endpoints
+
+- **Criar Cliente**
+  - Valida o email e a idade antes de criar um cliente.
+  - Retorna erros apropriados em caso de validação falha ou problemas no servidor.
+
+- **Atualizar Cliente**
+  - Valida o email único e a idade antes de atualizar o cliente.
+  - Verifica se o cliente existe antes de realizar alterações.
+
+- **Excluir Cliente**
+  - Remove o cliente do banco de dados com base no ID.
+  - Retorna erro 404 se o cliente não for encontrado.
+
+- **Obter Clientes**
+  - Retorna a lista de todos os clientes registrados.
+
+---
+
+## Arquivo `product.js`
+
+### Dependências
+- **`productService`**: Camada de lógica de negócios para Produtos.
+
+### Funcionalidades
+
+#### Endpoints
+
+- **Criar Produto**
+  - Cria um novo produto com base nos dados fornecidos na requisição.
+  - Retorna o produto criado ou um erro 500 em caso de falha.
+
+- **Atualizar Produto**
+  - Atualiza um produto existente com base no ID.
+  - Retorna erro 404 se o produto não for encontrado.
+
+- **Excluir Produto**
+  - Exclui um produto com base no ID.
+  - Retorna erro 404 se o produto não for encontrado.
+
+- **Obter Produtos**
+  - Retorna todos os produtos cadastrados no sistema.
+
+---
+
+## Arquivo `purchase.js`
+
+### Dependências
+- **`purchaseService`**: Camada de lógica de negócios para Compras.
+
+### Funcionalidades
+
+#### Endpoints
+
+- **Criar Compra**
+  - Registra uma nova compra com os dados fornecidos.
+  - Retorna a compra criada ou um erro 500 em caso de falha.
+
+- **Atualizar Compra**
+  - Atualiza uma compra existente com base no ID.
+  - Retorna erro 404 se a compra não for encontrada.
+
+- **Excluir Compra**
+  - Exclui uma compra com base no ID.
+  - Retorna erro 404 se a compra não for encontrada.
+
+- **Obter Compras**
+  - Retorna todas as compras registradas no sistema.
+
+---
+
+## Boas Práticas Implementadas
+1. **Validação de Dados**
+   - Verificação de unicidade para emails.
+   - Validação de idade mínima.
+2. **Tratamento de Erros**
+   - Mensagens claras para o cliente em caso de falha.
+   - Status HTTP apropriados (`400`, `404`, `500`).
+3. **Logs**
+   - Adição de logs para depuração e rastreamento das operações.
+
+## Melhorias Sugeridas
+- Implementar validação adicional no nível dos serviços.
+- Adicionar autenticação e autorização para proteger os endpoints.
+- Documentar os serviços usados pelos controllers.
+
+---

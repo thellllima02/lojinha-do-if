@@ -1,26 +1,27 @@
+const cors = require('cors');
 const express = require('express');
 const app = express();
-const port = 3000;  
+const port = 3001;  
 
-// Importando as rotas dos recursos (clientes, produtos, compras)
-const clienteRoutes = require('./route/cliente'); 
-const produtoRoutes = require('./route/produto');  
-const compraRoutes = require('./route/compra');  
+const clientRoutes = require('./route/client'); 
+const productRoutes = require('./route/product');  
+const purchaseRoutes = require('./route/purchase');  
+const apiRoutes = require('./route/api');
 
-// Middleware para parsing de JSON, para que o corpo das requisições seja interpretado como JSON
 app.use(express.json());
 
-// Definindo as rotas principais da API
-app.use('/clientes', clienteRoutes); 
-app.use('/produtos', produtoRoutes);  
-app.use('/compras', compraRoutes);  
+app.use(cors()); 
+app.use(express.json()); 
 
-// Rota raiz da API
+app.use('/clients', clientRoutes); 
+app.use('/products', productRoutes);  
+app.use('/purchases', purchaseRoutes);  
+app.use('/api', apiRoutes);
+
 app.get('/', (req, res) => {
-    res.send('API funcionando!');
+    res.send('Hello World!!!');
 });
 
-// Iniciando o servidor na porta definida
 app.listen(port, () => {
-    console.log(`Servidor rodando na porta ${port}`);  // Log indicando que o servidor iniciou
+    console.log(`Servidor rodando na porta ${port}`);  
 });
