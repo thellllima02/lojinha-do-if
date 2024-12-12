@@ -130,9 +130,9 @@ Sinta-se à vontade para contribuir com este projeto. Basta seguir os passos aba
 5. Abra um Pull Request.
 
 ## Autores
-Gabriel Silva Oliveira
-Hercules Da Silva Santos
-Leonardo Carvalho de Melo
+- Gabriel Silva Oliveira
+- Hercules Da Silva Santos
+- Leonardo Carvalho de Melo
 
 ## Licença
 Este projeto está licenciado sob a Licença MIT - veja o arquivo [LICENSE](LICENSE) para mais detalhes.
