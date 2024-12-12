@@ -1,4 +1,3 @@
-```md
 # Projeto: Sistema de Gerenciamento de Produtos
 
 ## Descrição
@@ -136,4 +135,3 @@ Sinta-se à vontade para contribuir com este projeto. Basta seguir os passos aba
 
 ## Licença
 Este projeto está licenciado sob a Licença MIT - veja o arquivo [LICENSE](LICENSE) para mais detalhes.
-```
