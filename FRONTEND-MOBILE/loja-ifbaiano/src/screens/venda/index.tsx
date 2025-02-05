@@ -69,7 +69,7 @@ const SellProductScreen = ({ navigation }: { navigation: NavigationProp<any> }) 
 
       <Text style={{ marginTop: 10 }}>Estoque disponível: {stock}</Text>
 
-      <Button mode="contained" onPress={handleSubmit(onSell)} style={{ marginTop: 20 }}>
+      <Button mode="contained" onPress={handleSubmit(onSell)} style={styles.button}>
       <Text style={styles.buttonText}>Registrar Venda</Text>
         
       </Button>
