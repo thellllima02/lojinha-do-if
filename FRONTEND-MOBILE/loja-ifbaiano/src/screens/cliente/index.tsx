@@ -7,7 +7,7 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import styles from "./styles";
 import { NavigationProp } from "@react-navigation/native";
 
-// Esquema de validação com Yup
+
 const schema = yup.object().shape({
   name: yup.string().required("Nome é obrigatório"),
   email: yup.string().email("E-mail inválido").required("E-mail é obrigatório"),
