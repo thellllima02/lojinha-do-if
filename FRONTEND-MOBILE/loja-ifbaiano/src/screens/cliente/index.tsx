@@ -4,6 +4,8 @@ import { useForm, Controller } from "react-hook-form";
 import { Button, TextInput } from "react-native-paper";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
+import styles from "./styles";
+import { NavigationProp } from "@react-navigation/native";
 
 // Esquema de validação com Yup
 const schema = yup.object().shape({
@@ -12,7 +14,7 @@ const schema = yup.object().shape({
   phone: yup.string().required("Telefone é obrigatório"),
 });
 
-const AddCustomerScreen = ({ navigation }) => {
+const AddCustomerScreen = ({ navigation }: {navigation: NavigationProp<any>}) => {
   const {
     control,
     handleSubmit,
@@ -21,15 +23,15 @@ const AddCustomerScreen = ({ navigation }) => {
     resolver: yupResolver(schema),
   });
 
-  const onSubmit = (data) => {
+  const onSubmit = (data: { name: string; email: string; phone: string }) => {
     console.log("Cliente cadastrado:", data);
     alert("Cliente cadastrado com sucesso!");
     navigation.goBack();
   };
 
   return (
-    <View style={{ padding: 20 }}>
-      <Text style={{ fontSize: 24, fontWeight: "bold", marginBottom: 20 }}>Adicionar Cliente</Text>
+    <View style={styles.container}>
+      <Text style={styles.title}>Adicionar Cliente</Text>
 
       <Controller
         control={control}
@@ -45,7 +47,7 @@ const AddCustomerScreen = ({ navigation }) => {
           />
         )}
       />
-      {errors.name && <Text style={{ color: "red" }}>{errors.name.message}</Text>}
+      {errors.name && <Text style={styles.errorText}>{errors.name.message}</Text>}
 
       <Controller
         control={control}
@@ -62,7 +64,7 @@ const AddCustomerScreen = ({ navigation }) => {
           />
         )}
       />
-      {errors.email && <Text style={{ color: "red" }}>{errors.email.message}</Text>}
+      {errors.email && <Text style={styles.errorText}>{errors.email.message}</Text>}
 
       <Controller
         control={control}
@@ -79,10 +81,10 @@ const AddCustomerScreen = ({ navigation }) => {
           />
         )}
       />
-      {errors.phone && <Text style={{ color: "red" }}>{errors.phone.message}</Text>}
+      {errors.phone && <Text style={styles.errorText}>{errors.phone.message}</Text>}
 
-      <Button mode="contained" onPress={handleSubmit(onSubmit)} style={{ marginTop: 20 }}>
-        Cadastrar
+      <Button mode="contained" onPress={handleSubmit(onSubmit)} style={styles.button}>
+      <Text style={styles.buttonText}>Cadastrar</Text>
       </Button>
     </View>
   );
